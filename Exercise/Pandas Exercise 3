@@ -1,0 +1,7 @@
+import pandas as pd
+top_forest = pd.read_excel('top10.xlsx')
+print("按照森林面积(单位：万公顷)排序: \n", top_forest)
+sorted_top_forest = top_forest.sort_values(by = '森林覆盖率', ascending = False)
+print("十个省级行政单位中森林面积最大的是：{}" .format(top_forest.loc[0,'地区']), '\n')
+print("十个省级行政单位中森林覆盖率最高的是：{}" .format(sorted_top_forest.iloc[0, 0]), '\n')
+print("按照森林覆盖率(单位：%)排序: \n",sorted_top_forest)
