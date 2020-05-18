@@ -1,0 +1,22 @@
+import turtle as t
+t.penup()
+t.goto(0, -200)
+t.left(90)
+t.pensize(7)
+t.pencolor('green')
+t.pendown()
+def branch(plist, len):                    
+    if len > 16:                               
+        pen_list = []                         
+        for i in plist:
+            i.forward(len)                   
+            p = i.clone()                    
+            i.left(65)                         
+            p.right(65)                       
+            pen_list.append(i)             
+            pen_list.append(p)            
+        branch(pen_list, len * 0.65)    
+
+original_pen_list = [t]
+branch(original_pen_list, 200)
+t.done()
