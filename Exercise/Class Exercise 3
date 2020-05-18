@@ -1,0 +1,85 @@
+class Hero():
+    # 定义构造方法
+    def __init__(self, name, experience):
+        self.name = name
+        self.experience = experience
+        self.level = self.experience // 100
+        self.health = 1000 + (self.level*100)
+        self.physical_attack = 150 + (self.level*20)
+        self.physical_armor = 50 + (self.level*10)
+        self.magic_armor = 50 + (self.level*20)
+        self.magic_attack = 0
+    # 定义攻击实例方法
+    def attack(self, enemy):
+        physical_hurt = 0 if self.physical_attack < enemy.physical_armor else (self.physical_attack - enemy.physical_armor)
+        magic_hurt = 0 if self.magic_attack < enemy.magic_armor else (self.magic_attack - enemy.magic_armor)
+        enemy.health = enemy.health - physical_hurt - magic_hurt
+        print("{}攻击了{},一共造成{}点伤害。".format (self.name, enemy.name, (physical_hurt + magic_hurt)))
+    # 定义升级实例方法
+    def level_up(self, value):
+        self.experience = self.experience + value
+        now_level = self.experience // 100
+        if now_level > self.level:
+            print("恭喜你升级了，现在你的级别是{}。".format(now_level))
+        self.__init__(self.name, self.experience)
+    # 定义死亡实例方法
+    def die(self):
+        self.experience = self.experience - 100
+        self.__init__(self.name, self.experience)
+        print("你掉了一级，现在的级别是{}" .format(self.level))
+    # 定义打野实例方法，添加实力对比信息
+    def hunt(self, master):
+        print("狩猎开始...")
+        print('''以下是你和猎物的实力对比：
+        *************************************
+        你的血量：{}     猎物的血量：{}
+        你的物理攻击：{}  猎物的物理攻击：{}
+        你的魔法攻击：{}  猎物的魔法攻击：{}
+        你的物理防御：{}  猎物的物理防御：{}
+        你的魔法防御：{}  猎物的魔法防御：{}
+        *************************************
+        ''' .format (self.health, master.health,
+               self.physical_attack, master.physical_attack,
+               self.magic_attack, master.magic_attack,
+               self.physical_armor, master.physical_armor,
+               self.magic_armor, master.magic_armor))
+        choice = input("请选择继续战斗(回车)还是果断逃跑（run）：")
+        if choice == "run":
+            print("这个猎物太强大了，我果断选择逃跑。")
+            return
+        hunt_round = 1
+        while 1:
+            print("**************第{}回合**************".format(hunt_round))
+            self.attack(master)
+            print("猎物的血量剩余{}" .format(master.health))
+            if master.health <= 0:
+                print("狩猎成功，经验值提高80点")
+                self.level_up(80)
+                break
+            master.attack(self)
+            print("你的血量剩余{}" .format(self.health))
+            if self.health <= 0:
+                print("狩猎失败,级别减少一级")
+                self.die()
+                break
+            hunt_round += 1
+    def match_fight(self):
+        pass
+class Magician(Hero):
+    def __init__(self, name,experience):
+        super().__init__(name, experience)
+        self.magic_attack = 80 + (self.level*60)
+class Shooter(Hero):
+    def __init__(self, name, experience):
+        super().__init__(name, experience)
+        self.physical_attack = 200 + (self.level*50)
+class Tank(Hero):
+    def __init__(self, name,experience):
+        super().__init__(name, experience)
+        self.health = 2000 + (self.level*200)
+        self.physical_armor = 80 + (self.level*20)
+        self.magic_armor = 80 + (self.level*30)
+xiaoxiang = Shooter("Draven", 0)
+daxiang = Magician("Ryze", 100)
+# 指挥daxiang去狩猎，猎物为xiaoxiang
+daxiang.hunt(xiaoxiang)
