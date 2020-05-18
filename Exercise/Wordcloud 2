@@ -1,0 +1,29 @@
+# coding: utf-8
+import numpy as np
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import jieba
+from PIL import Image
+
+text = open('E:/Python Fun/wechat.txt', 'rb' ).read()
+
+cut_text = jieba.cut(text, cut_all=True)
+
+text_str = " ".join(cut_text)
+
+mask = np.array(Image.open('E:/Python Fun/1.jpg'))
+
+wc = WordCloud(background_color='white',
+               mask = mask,
+               font_path="E:/Python Fun/甜蜜记忆体.ttf",
+               max_words = 2000,
+               max_font_size = 200,
+               random_state = 200,
+               collocations=False
+)
+wc.generate(text_str)
+
+plt.figure(figsize=(6, 6))
+plt.imshow(wc)
+plt.axis("off")
+plt.show()
