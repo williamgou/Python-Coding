@@ -1,0 +1,15 @@
+import pandas as pd
+
+ori_dict = {'名称':['胶纸','签字笔','直尺','记号笔','手账纸','贴纸'],
+            '数量':[3, 2, 1, 3, 1, 4],
+            '单价':[1.7, 1.5, 1.2, 2.3, 17.3, 3.2]}
+df = pd.DataFrame(ori_dict)
+print(df)
+jin_e = []
+#print(range(len(df)))
+for i in range(len(df)):
+    jin_e.append((df.loc[i, '数量'])*(df.loc[i, '单价']))
+
+df['金额'] = jin_e
+print(df)
+df.to_excel('test.xlsx')
