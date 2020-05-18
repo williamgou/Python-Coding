@@ -1,0 +1,39 @@
+import random
+
+
+class BankAccount(object):
+    fix_loan_rate = 0.05
+    interest_rate = 0.05
+
+    # 定义构造方法
+    def __init__(self, name, this_id, password, money):
+        self.name = name
+        self.__this_id = this_id
+        self.__password = password
+        self.__money = money
+        self.loan_year = 0
+        self.loan_amount = 0
+        self.credit_score = 0
+        self.loan_rate = 0.0
+        self.total_money = 0
+
+    @staticmethod
+    def __credit_score():
+        score_list = [1, 2, 3]
+        score = random.choice(score_list)
+        return score
+
+    def loan(self, loan_year, loan_amount):
+        self.loan_year = loan_year
+        self.loan_amount = loan_amount
+        self.credit_score = self.__credit_score()
+        self.loan_rate = self.fix_loan_rate * self.credit_score
+        self.total_money = self.loan_amount * (1 + self.loan_rate) ** self.loan_year
+        print("{}的信用评分为{}，贷款利率为：{}".format(self.name, self.credit_score, self.loan_rate))
+        print("{}{}年内需还款的总额为：{}".format(self.name, self.loan_year, self.total_money))
+
+
+tom = BankAccount("Tom", "123456", "888888", 1000)
+tom.loan(1, 10000)
+
+
