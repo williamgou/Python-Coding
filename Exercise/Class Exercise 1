@@ -1,0 +1,21 @@
+class Applicant():
+    company = "小象金融"
+    apply_type = "校园秋招"
+    # 定义构造函数
+    def __init__(self, name, age, sex, job, specialty, **education):
+        self.name = name
+        self.age = age
+        self.sex = sex
+        self.job = job
+        self.specialty = specialty
+        self.education = education
+# 修改和添加类变量
+Applicant.company = "小象银行"
+Applicant.apply_type = "社会招聘"
+Applicant.job_years = 3
+# 获取所有类变量
+my_dict = Applicant.__dict__
+# 遍历所有类变量，并排除魔法变量
+for i in my_dict:
+    if i[:2] != "__":
+        print("现在的{}是：{}" .format (i, my_dict[i]))
