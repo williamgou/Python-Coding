@@ -1,0 +1,18 @@
+import urllib.request
+from bs4 import BeautifulSoup
+def kecheng(page):
+    for i in range(page):
+        url = "http://test2.chinahadoop.cn/open/filter/-1?page={}" .format (i + 1)
+        response = urllib.request.urlopen(url)
+        html = response.read().decode("utf-8")
+        soup = BeautifulSoup(html, "lxml")
+        title = soup.find_all("div", attrs={"class": "title"})
+        teacher = soup.find_all("div", attrs={"class": "pull-left"})
+        student = soup.find_all("div", attrs={"class": "pull-right"})[1:]
+        for j in range(len(title)):
+            print("******小象学院第{}页第{}个课程的信息******" .format (i + 1, j + 1))
+            print("课程题目：" + title[j].text.replace("\n", ""), )
+            print("课程老师：" + teacher[j].text.replace("\n", ""))
+            print("学生情况：" + student[j].text.replace("\n", ""))
+if __name__ == "__main__":
+    kecheng(2)
