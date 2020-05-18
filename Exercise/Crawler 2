@@ -1,0 +1,64 @@
+import requests
+import time
+import random
+# 定义一个函数用来更新cookies
+def cookies_update(url, my_headers):
+    # 自动获取cookies
+    s = requests.Session()
+    s.get(url, headers=my_headers)
+    cookies = s.cookies
+    return cookies
+# 定义一个爬虫函数
+def crawler(req_url, my_headers, cookies, qs_params, form_data):
+    # 发送请求
+    req_result = requests.post(req_url, headers=my_headers, cookies=cookies,
+                           params=qs_params, data=form_data)
+    # 将请求结果转换为字典
+    result = req_result.json()
+    # 提取职位相关的信息并输出
+    positions_info = result["content"]["positionResult"]["result"]
+    # 提取页码
+    pn = form_data['pn']
+    # for循环遍历职位列表并输出
+    for i in range(len(positions_info)):
+        print("******第{}页第{}个西二旗的Python相关职位的信息******" .format(pn, i+1))
+        print("职位名称：" + positions_info[i]["positionName"] )
+        print("公司名称：" + positions_info[i]["companyShortName"] )
+        print("薪资：" + positions_info[i]["salary"] )
+        # TODO
+        # 打印获取到的公司位置信息
+        print("公司位置：" + positions_info[i]["city"] + positions_info[i]["district"] + positions_info[i]["businessZones"][0])
+
+if __name__ == "__main__":
+    # 请求的URL信息
+    req_url = 'https://www.lagou.com/jobs/positionAjax.json'
+    # TODO
+    # 补充header信息，从浏览器获取
+    my_headers = {
+        'Referer': 'https://www.lagou.com/jobs/list_python/p-city_2?px=default&district=%E6%B5%B7%E6%B7%80%E5%8C%BA&bizArea=%E8%A5%BF%E4%BA%8C%E6%97%97',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
+    }
+    # TODO
+    # 通过指定qs_params定义要搜索的地址
+    qs_params = {'city':'北京',
+                 'district':'海淀区',
+                 'bizArea':'西二旗',
+                 'needAddtionalResult': 'false',}
+    # 输入查询职位关键词
+    form_data_n = {'kd':'Python'}
+    # 依次爬取5页数据
+    for n in range(1, 6):
+        # 更新cookies，更新的cookies存储在updated_cookies变量中
+        updated_cookies = cookies_update(my_headers["Referer"], my_headers)
+        # 每爬一页，随机间隔3-10秒
+        sleep_time = random.randint(3,10)
+        time.sleep(sleep_time)
+        form_data_n['pn'] = n
+        if n == 1:
+            form_data_n['first'] = True
+            crawler(req_url, my_headers, updated_cookies,
+                    qs_params, form_data_n)
+        else:
+            form_data_n['first'] = False
+            crawler(req_url, my_headers, updated_cookies,
+                    qs_params, form_data_n)
