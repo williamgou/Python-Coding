@@ -1,0 +1,48 @@
+"""
+    Author：William Gou
+    Function：Currency Convert
+    Version：3.0
+    Date：18-April-2019
+    2.0 Function Upgrade： based on input, convert accordingly
+    3.0 Function Upgrade: add circulation
+    4.0 Function Upgrade: use function
+    5.0 Function Upgrade: use lambda function
+"""
+
+
+def main():
+    """
+    Main Function
+    """
+
+    # Currency
+    USD_CNY = 6.77
+
+
+    # Input with unit
+    currency_str_value = input("Please input the amount with unit:")
+
+    # Get the unit
+    unit = currency_str_value[-3:]
+
+    if unit == 'CNY':
+        exchange_rate = 1 / USD_CNY
+
+    elif unit == 'USD':
+        exchange_rate = USD_CNY
+
+    else:
+        exchange_rate = -1
+
+    if exchange_rate == -1:
+        print('Sorry, the current version not supports this currency conversion.')
+
+    else:
+        # Get input money
+        input_money = eval(currency_str_value[:-3])
+        currency_convert = lambda x: x*exchange_rate
+        output_money = currency_convert(input_money)
+        print('The corresponding amount is:', output_money)
+
+if __name__ == '__main__':
+    main()
