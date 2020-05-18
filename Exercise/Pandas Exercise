@@ -1,0 +1,33 @@
+import pandas as pd
+def intellect_money(money):
+    print("刚开始你有{}元，全仓买入贵州茅台股票" .format(money))
+    # 读取数，存入变量data中
+    data = pd.read_excel("stock_data.xlsx", parse_dates=["date"])
+    # 使用i记录当前已经检查到第几行记录
+    i = 0
+    while i < len(data):
+        # 计算第i天的购买价格
+        buy_price = data.loc[i, "open"]
+        # 计算股数
+        number = money // buy_price
+        # 因为股票只能一股一股购买，将余钱放入变量balance
+        balance = money % buy_price
+        # 以j作为游标，寻找下一个卖出点
+        j = i
+        while j < len(data):
+            # 如果第j天价格比记录的第i天价格上涨10%，做卖出处理
+            if data.loc[j, "open"] / buy_price >= 1.10:
+                # 股数乘以当天价格得到股票卖出后的收入earning，加上原有零钱balance，得到总钱数
+                # 存入变量money中。
+                earning = data.loc[j, "open"] * number
+                money = earning + balance
+                # 将买入游标移动到j
+                i = j
+                # 打印卖出行为，并退出内循环，结束此次卖出点寻找过程
+                print("你在第{}天全仓卖出股票，在第{}天重新全仓买入".format(i, i+1))
+                break
+            else:
+                j = j + 1
+        i = i + 1
+    print("经过17年的投资后，现在你有{}元" .format(money))
+intellect_money(10000)
