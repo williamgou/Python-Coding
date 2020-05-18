@@ -1,0 +1,52 @@
+"""
+    Author: William Gou
+    Function: Drawing pentagram
+    Date： 8 MAY 2019
+    Version: 1.0 Drawing five-points star
+    Add function: 2.0 Using circulation to draw pentagram
+                  3.0 Using recursion to draw pentagram
+"""
+
+import turtle
+
+def drawing_recursive_pentagram(size):
+
+    # Drawing pentagram
+
+    count = 1
+
+    while count <= 5:
+        turtle.forward(size)
+        turtle.right(144)
+        # count = count + 1
+        count += 1
+    size += 20
+
+    while size <= 80:
+        drawing_recursive_pentagram(size)
+        break
+
+#    if size <= 80:
+#       drawing_recursive_pentagram(size)
+
+def main():
+
+    '''
+    Main Function
+    '''
+
+    turtle.pu()
+    turtle.bk(80)
+    turtle.pd()
+    turtle.pensize(5)
+    turtle.pencolor('green')
+    turtle.fillcolor('pink')
+
+    size = 60
+
+    drawing_recursive_pentagram(size)
+
+    turtle.exitonclick()
+
+if __name__ == '__main__':
+    main()
