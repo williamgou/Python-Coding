@@ -1,0 +1,25 @@
+import pandas as pd
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import jieba
+
+
+data = pd.read_excel('../data/lesson17_test_data.xlsx')
+
+skills = data["职位需求"]
+#print(type(skills))
+skills = ' '.join(skills)
+#print(skills)
+skills_after_jieba = jieba.cut(skills, cut_all=True)
+
+skills_str = ' '.join(skills_after_jieba)
+#print(str(skills_after_jieba))
+#print(skills_str)
+
+wc = WordCloud(font_path='../data/simhei.ttf', background_color='white', width = 1000, height = 860)
+wc.generate(skills_str)
+
+plt.figure(figsize=(10, 10))
+plt.imshow(wc)
+plt.axis("off")
+plt.show()
